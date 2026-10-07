@@ -1,0 +1,26 @@
+schema_version = "1.0.0"
+
+id = "projection_trace_tool"
+version = "1.1.0"
+name = "Projection Trace Tool"
+tagline = "Trace lines through a projector for projection and video mapping"
+maintainer = "precyzja.org"
+type = "add-on"
+website = "https://www.reddit.com/r/video_mapping/"
+
+tags = ["3D View", "Camera", "Lighting"]
+
+blender_version_min = "4.2.0"
+
+license = ["SPDX:GPL-3.0-or-later"]
+copyright = ["2026 precyzja.org"]
+
+[build]
+paths_exclude_pattern = [
+  "__pycache__/",
+  "/.git/",
+  "/.gitignore",
+  "/tests/",
+  "/dist/",
+  "*.zip",
+]
