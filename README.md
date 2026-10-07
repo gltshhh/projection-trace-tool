@@ -31,7 +31,7 @@ community. Questions, ideas and projects made with it are welcome there.
 
 ## Installation
 
-Download the `.zip` from Releases, then in Blender:
+Download `projection_trace_tool-<version>.zip` from [Releases](https://github.com/gltshhh/projection-trace-tool/releases/latest), then in Blender:
 Edit > Preferences > Get Extensions > ⌄ > **Install from Disk**.
 
 If you used version 1.0 (named Projector Trace, `projector_trace.py` run as a

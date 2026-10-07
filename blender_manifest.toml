@@ -6,7 +6,7 @@ name = "Projection Trace Tool"
 tagline = "Trace lines through a projector for projection and video mapping"
 maintainer = "precyzja.org"
 type = "add-on"
-website = "https://www.reddit.com/r/video_mapping/"
+website = "https://github.com/gltshhh/projection-trace-tool"
 
 tags = ["3D View", "Camera", "Lighting"]
 
