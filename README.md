@@ -46,6 +46,7 @@ Panel: 3D View > Sidebar (N) > **Trace**.
 | Action | How |
 |---|---|
 | Open the projector window | **Open on projector** (Monitor −1 = first non-primary) |
+| Back to the full frame | **Home** with the mouse over the projector window |
 | Close the projector window | ✕ next to it, or **Ctrl+Shift+Q** from any window |
 | Start tracing | **Start trace (projector)**, or **Ctrl+Shift+T** over a viewport |
 | Black background (lines only) | **Black background on projector** (toggle; restores the previous shading) |
@@ -61,12 +62,17 @@ While tracing:
 | C | close / open the loop |
 | Enter, Space | save the line as a curve and start the next one |
 | Esc | discard the current line; a second Esc exits |
-| MMB, scroll, Home, numpad, Ctrl+Alt+F | navigate as usual |
+| Home | fit the camera frame to the full projector screen |
+| MMB, scroll, numpad, Ctrl+Alt+F | navigate as usual |
 
 Other keys are blocked while tracing, so you cannot delete an object by accident.
 
 ## Notes
 
+- **Home always brings the projector back to the full frame.** If you zoom or pan in the
+  projector window (scroll, MMB), press **Home** with the mouse over it: the camera frame
+  is scaled to fill the whole projector screen again, so the projection lines up with
+  the object. It also works while tracing.
 - With *Projection: On scan* and no *Only object* set, the first click may take a moment
   on very heavy scenes while Blender builds the raycast structure. Set *Only object* to
   the scan to avoid it.

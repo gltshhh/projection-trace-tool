@@ -11,6 +11,8 @@ Panel: 3D View > Sidebar (N) > "Trace".
 Projector: "Open on projector" opens a new window with a viewport, fullscreen on the
 second monitor (Windows only). Clicking again closes the old window and opens a new one.
 Ctrl+Shift+Q (from any window) closes the projector window.
+Home (mouse over the projector window) scales the camera frame back to the full screen
+after any zoom or pan, so the projection lines up with the object again.
 Start: "Start trace (projector)" button or Ctrl+Shift+T with the mouse over a viewport.
 
 While tracing:
@@ -20,7 +22,8 @@ While tracing:
   C                   - close / open the loop
   Enter / Space       - finish the line -> curve in the TRACE collection, start the next one
   Esc                 - discard the current line; a second Esc exits
-  Scroll / MMB / Home / Numpad - navigate the view as usual
+  Home                - back to the full camera frame
+  Scroll / MMB / Numpad - navigate the view as usual
 Points are stored in 3D (projected onto the scan surface or onto a Z plane),
 so zooming while drawing does not break anything.
 """
