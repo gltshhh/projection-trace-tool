@@ -24,7 +24,7 @@ While tracing:
   Esc                 - discard the current line; a second Esc exits
   Home                - back to the full camera frame
   Scroll / MMB / Numpad - navigate the view as usual
-Points are stored in 3D (projected onto the scan surface or onto a Z plane),
+Points are stored in 3D (projected onto the scan surface or onto a Z or Y plane),
 so zooming while drawing does not break anything.
 """
 
@@ -116,10 +116,11 @@ def _in_trace_collection(ob):
     return any(c.name == TRACE_COLLECTION for c in ob.users_collection)
 
 
-def _plane_hit(origin, direction, z):
-    if abs(direction.z) < 1e-9:
+def _plane_hit(origin, direction, value, axis=2):
+    """Hit on the plane where coordinate `axis` (1 = Y, 2 = Z) equals `value`."""
+    if abs(direction[axis]) < 1e-9:
         return None
-    t = (z - origin.z) / direction.z
+    t = (value - origin[axis]) / direction[axis]
     if t < 0.0:
         return None  # plane is behind the viewer
     return origin + direction * t
@@ -146,7 +147,7 @@ def _surface_hit(context, origin, direction):
 
 
 def _point_3d(context, region, rv3d, co2d):
-    """Project a screen point onto the scan (raycast) or onto the Z plane."""
+    """Project a screen point onto the scan (raycast) or onto the Z / Y plane."""
     p = context.scene.ptrace
     origin = view3d_utils.region_2d_to_origin_3d(region, rv3d, co2d)
     direction = view3d_utils.region_2d_to_vector_3d(region, rv3d, co2d)
@@ -157,7 +158,9 @@ def _point_3d(context, region, rv3d, co2d):
         hit = _surface_hit(context, origin, direction)
         if hit is not None:
             return hit
-    return _plane_hit(origin, direction, p.plane_z)
+    if p.plane_axis == "Y":
+        return _plane_hit(origin, direction, p.plane_y, 1)
+    return _plane_hit(origin, direction, p.plane_z, 2)
 
 
 def _trace_collection(scene):
@@ -937,11 +940,16 @@ class PTRACE_Props(bpy.types.PropertyGroup):
     projection: bpy.props.EnumProperty(
         name="Projection", default="SURFACE",
         items=[("SURFACE", "On scan", "Points land on mesh surfaces (raycast)"),
-               ("PLANE", "On Z plane", "Points land on a horizontal plane at height Z")])
+               ("PLANE", "On plane", "Points land on the plane below (also used where the scan is missed)")])
     target: bpy.props.PointerProperty(
         name="Only object", type=bpy.types.Object, poll=_poll_mesh,
         description="Raycast only against this mesh (faster). Empty = whole scene")
+    plane_axis: bpy.props.EnumProperty(
+        name="Plane", default="Z",
+        items=[("Z", "Z (horizontal)", "Horizontal plane at height Z - floor, table, tracing from above"),
+               ("Y", "Y (vertical)", "Vertical plane at depth Y - wall or facade facing a projector on the Y axis")])
     plane_z: bpy.props.FloatProperty(name="Plane Z", default=0.0, unit="LENGTH")
+    plane_y: bpy.props.FloatProperty(name="Plane Y", default=0.0, unit="LENGTH")
     step_px: bpy.props.FloatProperty(name="Freehand step (px)", default=12.0, min=2.0, max=200.0)
     line_width: bpy.props.FloatProperty(name="Line width", default=4.0, min=1.0, max=30.0)
     color: bpy.props.FloatVectorProperty(
@@ -1017,7 +1025,8 @@ class PTRACE_PT_panel(bpy.types.Panel):
         box.prop(p, "projection")
         if p.projection == "SURFACE":
             box.prop(p, "target")
-        box.prop(p, "plane_z")
+        box.prop(p, "plane_axis")
+        box.prop(p, "plane_y" if p.plane_axis == "Y" else "plane_z")
         box.prop(p, "step_px")
         box = lay.box()
         box.prop(p, "line_width")
@@ -1075,9 +1084,18 @@ _PL = (
     ("Next sun angle", "Następny kąt słońca"),
     ("Projection", "Rzut"),
     ("On scan", "Na skan"),
-    ("On Z plane", "Na płaszczyznę Z"),
+    ("On plane", "Na płaszczyznę"),
     ("Points land on mesh surfaces (raycast)", "Punkt ląduje na powierzchni meshy (raycast)"),
-    ("Points land on a horizontal plane at height Z", "Punkt ląduje na płaszczyźnie o wysokości Z"),
+    ("Points land on the plane below (also used where the scan is missed)",
+     "Punkt ląduje na płaszczyźnie poniżej (także tam, gdzie raycast nie trafi w skan)"),
+    ("Plane", "Płaszczyzna"),
+    ("Z (horizontal)", "Z (pozioma)"),
+    ("Y (vertical)", "Y (pionowa)"),
+    ("Horizontal plane at height Z - floor, table, tracing from above",
+     "Pozioma płaszczyzna na wysokości Z – podłoga, stół, trace z góry"),
+    ("Vertical plane at depth Y - wall or facade facing a projector on the Y axis",
+     "Pionowa płaszczyzna na głębokości Y – ściana lub fasada przed projektorem na osi Y"),
+    ("Plane Y", "Y płaszczyzny"),
     ("Only object", "Tylko obiekt"),
     ("Raycast only against this mesh (faster). Empty = whole scene",
      "Raycast tylko w ten mesh (szybciej). Puste = cała scena"),

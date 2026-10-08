@@ -200,6 +200,8 @@ def main():
     pt = scene.ptrace
     pt.proj_camera = cam
     pt.projection = "SURFACE"
+    pt.plane_axis = "Y"        # misses fall on the facade plane, not the floor
+    pt.plane_y = 0.0
 
     setup_ui()
     bpy.ops.wm.save_as_mainfile(filepath=OUT, compress=True)

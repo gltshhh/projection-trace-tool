@@ -11,7 +11,7 @@ your scan or model, ready for animation and content work.
 - **Projector window**: opens a viewport in a new window, fullscreen on the second
   monitor, looking through a chosen camera (the scene camera is left alone).
 - **Trace**: draw lines in that window. Points land in 3D on the scanned surface (or on a
-  horizontal plane), so zooming while drawing breaks nothing. Lines are saved as curves
+  horizontal Z plane or a vertical Y plane), so zooming while drawing breaks nothing. Lines are saved as curves
   in the `TRACE` collection and can be converted to meshes.
 - **Light test**: the sun jumps around the model in steps (Workbench shadows or a
   temporary EEVEE sun).

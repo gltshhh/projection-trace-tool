@@ -101,6 +101,11 @@ def t_plane_hit():
     assert (m._plane_hit(o, d, 2.0) - Vector((0, 0, 2))).length < 1e-6
     assert m._plane_hit(o, Vector((0, 0, 1)), 2.0) is None, "plane behind viewer must be None"
     assert m._plane_hit(o, Vector((1, 0, 0)), 2.0) is None
+    # vertical Y plane: projector on -Y looking along +Y at a facade
+    o = Vector((0, -5, 0.5))
+    assert (m._plane_hit(o, Vector((0, 1, 0)), 0.0, 1) - Vector((0, 0, 0.5))).length < 1e-6
+    assert m._plane_hit(o, Vector((0, -1, 0)), 0.0, 1) is None, "Y plane behind viewer must be None"
+    assert m._plane_hit(o, Vector((0, 0, 1)), 0.0, 1) is None
 
 
 def t_surface_hit_skips_trace():
@@ -206,7 +211,7 @@ for name, fn in [
     ("register (replaces legacy 1.0)" if legacy else "register", t_register),
     ("unregister + register", t_reregister),
     ("Run Script reload replaces copy", t_run_script_reload),
-    ("plane hit, behind = None", t_plane_hit),
+    ("plane hit Z / Y, behind = None", t_plane_hit),
     ("raycast skips TRACE, target mesh", t_surface_hit_skips_trace),
     ("curve + to_mesh (closed, open)", t_curve_and_mesh),
     ("polls without a viewport", t_polls_without_viewport),
