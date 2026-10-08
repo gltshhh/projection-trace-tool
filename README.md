@@ -87,6 +87,11 @@ Other keys are blocked while tracing, so you cannot delete an object by accident
 - With *Projection: On scan* and no *Only object* set, the first click may take a moment
   on very heavy scenes while Blender builds the raycast structure. Set *Only object* to
   the scan to avoid it.
+- Where a line misses every object, points fall on the fallback plane. For a facade, set
+  *Plane* to **Y (vertical)** (the default is Z) and *Plane Y* to the facade's depth, and
+  face the projector camera along the Y axis: empty areas then trace like a flat image,
+  objects in front are traced on their surface. A camera looking along X never hits the
+  Y plane.
 - The camera frame aspect comes from the scene render resolution; set it to the
   projector's native resolution.
 - Do not reload or disable the add-on while tracing is running (press Esc twice first).
