@@ -39,6 +39,17 @@ script or a legacy add-on), disable it first. Saved settings from 1.0 are not ca
 over, because properties were renamed to English; traces in the `TRACE` collection
 are kept.
 
+## Starter scene
+
+No projector or scan at hand? Download `projection_trace_starter.blend` from
+[Releases](https://github.com/gltshhh/projection-trace-tool/releases/latest) (or
+[examples/](examples/) in this repo). It has a scale model of a small building facade
+on a floor and a `Projector` camera set up for it: in front of the facade on the -Y
+axis, level, looking along +Y, 1920×1080, throw ratio 1.5. The add-on already uses that
+camera, so you can press **Open on projector** and **Start trace** right away. The file
+is saved with Blender 4.3 (checked in 4.3 and 5.1); `examples/make_starter_scene.py`
+rebuilds it.
+
 ## Usage
 
 Panel: 3D View > Sidebar (N) > **Trace**.
